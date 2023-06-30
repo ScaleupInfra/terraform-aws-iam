@@ -1,48 +1,55 @@
-# Code Explanation: IAM User Setup
-This code is used to set up user accounts and permissions for a system. Let's break it down step by step:
+# Terraform Code Execution Guide
 
-### Step 1: Creating a Group
+This guide provides step-by-step instructions on how to run the Terraform code.
 
-First, we create a group called "autoscaleupinfra". A group is a collection of users with similar access needs. You all will be part of this group.
+## Prerequisites
 
-### Step 2: Listing Users
+- [Terraform](https://www.terraform.io/downloads.html) - Make sure you have Terraform installed on your computer.
 
-Next, we have a list of users who will have access to the system. We have ten users in total, each with their own names or email addresses.
+## How to Run the Code
 
-### Step 3: Creating Users
+1. Install Terraform:
+   - Make sure you have Terraform installed on your computer.
 
-Now, we create user accounts for each of you based on the names or email addresses provided. You will have your own individual accounts to log in.
+2. Check Terraform version:
+   - Open your command-line interface (CLI).
+   - Run the following command:
+     ```
+     terraform version
+     ```
 
-### Step 4: Setting User Login Profiles
+3. Initialize Terraform:
+   - In the CLI, navigate to the directory where your `main.tf` file is located.
+   - Run the following command:
+     ```
+     terraform init
+     ```
 
-To enable you to log in to your accounts, we set up login profiles and generate passwords for each user. You don't have to worry about changing the passwords for now.
+4. Preview the changes:
+   - Run the following command in the same directory:
+     ```
+     terraform plan
+     ```
+   - Review the output, which shows the resources that will be created or modified.
 
-### Step 5: Creating an EC2 Role
+5. Before Applying obtain AWS access key and secret key:
+   - Go to the AWS console.
+   - Click on the "Security" section.
+   - Locate and retrieve your access key and secret key from the credentials section.
 
-We create a special role called "ec2-role". This role defines what you can do within the system and what actions you're allowed to perform.
+6. Apply the changes:
+   - Run the following command:
+     ```
+     terraform apply
+     ```
+   - Confirm the command to apply the changes and create the infrastructure.
 
-### Step 6: Defining EC2 Policies
+7. Apply the infrastructure:
+   - Run the following command:
+     ```
+     terraform apply
+     ```
+   - Proceed with applying the changes. This step will create the infrastructure based on your code.
 
-Two policies are defined: one for creating EC2 instances and another for creating ECR repositories. Policies are like rules that determine what you can do.
 
-### Step 7: Attaching Policies to the EC2 Role
 
-We attach the EC2 and ECR policies to the "ec2-role". This ensures that you, as users with this role, can follow the defined rules and perform the necessary actions.
-
-### Step 8: Granting Full Access to Users
-
-Good news! Each one of you is granted full access to EC2. We attach a policy called "AmazonEC2FullAccess" to your user accounts, allowing you to perform all EC2-related actions.
-
-### Step 9: Granting Full Access to the Group
-
-Since you are all part of the "autoscaleupinfra" group, we also grant the entire group full access to EC2. This means any user within the group can perform EC2 actions without restrictions.
-
-### Step 10: Creating a File with User Passwords
-
-For your convenience, we create a file called "iam_user_passwords.txt". It contains your usernames and passwords, serving as a reference for you to remember your login credentials.
-
-### Step 11: Outputting User Passwords
-
-Lastly, we provide an output that displays your usernames and passwords. This output helps you quickly find and access your login credentials whenever needed.
-
-## That's it! This code sets up your user accounts, defines permissions, and ensures you have the necessary access to work within the system.  
