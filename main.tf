@@ -15,7 +15,9 @@ locals {
     "user7",
     "user8",
     "user9",
-    "user10"
+    "user10",
+    "admin_user1",
+    "admin_user2"
   ]
 }
 
@@ -56,21 +58,77 @@ EOF
 # Create an IAM policy named "ec2-policy" for EC2 instance management
 resource "aws_iam_policy" "ec2_policy" {
   name        = "ec2-policy"
-  description = "Allows creating EC2 instances"
+  description = "Allows specific EC2 actions in ap-southeast-1 region and denies other instance types"
 
   policy = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "AllowEC2",
       "Effect": "Allow",
+      "Action": [
+        "ec2:*"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:RequestedRegion": "ap-southeast-1"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
       "Action": "ec2:*",
+      "Resource": "*",
+      "Condition": {
+        "ForAnyValue:StringNotLike": {
+          "ec2:InstanceType": [
+            "t2.micro"
+          ]
+        }
+      }
+    }
+  ]
+}
+EOF
+}
+
+# Create an IAM policy named "admin-policy" for administrative privileges
+resource "aws_iam_policy" "admin_policy" {
+  name        = "admin-policy"
+  description = "Administrative policy"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "*",
       "Resource": "*"
     }
   ]
 }
 EOF
+}
+
+# Attach the EC2 policy to the IAM group
+resource "aws_iam_group_policy_attachment" "ec2_policy_attachment" {
+  group      = aws_iam_group.my_group.name
+  policy_arn = aws_iam_policy.ec2_policy.arn
+}
+
+# Attach the admin policy to the IAM group
+resource "aws_iam_group_policy_attachment" "admin_policy_attachment" {
+  group      = aws_iam_group.my_group.name
+  policy_arn = aws_iam_policy.admin_policy.arn
+}
+
+# Attach the EC2 policy to the IAM users
+resource "aws_iam_user_group_membership" "ec2_policy_group_membership" {
+  count  = length(local.users)
+  user   = aws_iam_user.my_users[count.index].name
+  groups = [aws_iam_group.my_group.name]
 }
 
 # Create an IAM policy named "ecr-policy" for ECR repository management
@@ -93,36 +151,10 @@ resource "aws_iam_policy" "ecr_policy" {
 EOF
 }
 
-# Attach the EC2 policy to the EC2 role
-resource "aws_iam_role_policy_attachment" "ec2_policy_attachment" {
-  role       = aws_iam_role.ec2_role.name
-  policy_arn = aws_iam_policy.ec2_policy.arn
-}
-
 # Attach the ECR policy to the EC2 role
 resource "aws_iam_role_policy_attachment" "ecr_policy_attachment" {
   role       = aws_iam_role.ec2_role.name
   policy_arn = aws_iam_policy.ecr_policy.arn
-}
-
-# Attach the AmazonEC2FullAccess policy to the IAM users
-resource "aws_iam_user_policy_attachment" "ec2_full_access_attachment" {
-  count      = length(local.users)
-  user       = aws_iam_user.my_users[count.index].name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
-}
-
-# Attach the AmazonEC2FullAccess policy to the IAM group
-resource "aws_iam_group_policy_attachment" "ec2_full_access_attachment" {
-  group      = aws_iam_group.my_group.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
-}
-
-# Create a local file containing the IAM user passwords
-resource "local_file" "iam_user_passwords" {
-  count    = length(local.users)
-  filename = "iam_user_passwords.txt"
-  content  = "Username: ${aws_iam_user.my_users[count.index].name}\nPassword: ${aws_iam_user_login_profile.my_users_login_profile[count.index].password}"
 }
 
 # Output the user passwords as a map
