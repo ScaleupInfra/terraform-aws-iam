@@ -3,7 +3,7 @@
 
 ## Badges
 
-[![Terraform AWS](https://github.com/ScaleupInfra/terraform-aws-s3-bucket/actions/workflows/main.yml/badge.svg)](https://github.com/ScaleupInfra/terraform-aws-s3-bucket/actions/workflows/main.yml)
+[![Terraform AWS](https://github.com/ScaleupInfra/terraform-aws-iam/actions/workflows/main.yml/badge.svg)](https://github.com/ScaleupInfra/terraform-aws-iam/actions/workflows/main.yml)
 
 # IAM Module
 
@@ -189,4 +189,4 @@ Please adhere to this project's `code of conduct`.
 
 ## Support
 
-Join our Open Source Community on [Slack](https://app.slack.com/huddle/T05EL2WSB2M/C05EL2WTMA5). It's FREE for everyone! Our "SweetOps" community is where you get to talk with others who share a similar vision for how to rollout and manage infrastructure. This is the best place to talk shop, ask questions, solicit feedback, and work together as a community to build totally sweet infrastructure.
+Come join our Open Source Community on [Slack](https://app.slack.com/huddle/T05EL2WSB2M/C05EL2WTMA5). It's completely FREE! Our community is the perfect platform for infrastructure enthusiasts like you. Engage in discussions, seek advice, share your ideas, and collaborate with fellow community members to build scalable and robust infrastructure solutions. Don't miss out on this opportunity to be a part of our thriving community!
