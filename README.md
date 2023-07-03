@@ -69,6 +69,47 @@ The module provides the following output:
 |------|-------------|
 |[user\_passwords](#output\_user\_passwords) | Output the user passwords as a map |
 
+# IAM Policies and Attachments
+
+This repository contains Terraform configuration files to create an infrastructure setup with IAM policies and attachments. Here's an overview of the IAM policies and their attachments:
+
+## EC2 Policy
+
+- **Name**: `ec2-policy`
+- **Description**: This policy is used for EC2 instance management.
+- **Policy**: The policy is defined by the variable `var.ec2_policy`.
+
+## Admin Policy
+
+- **Name**: `admin-policy`
+- **Description**: This policy grants administrative privileges.
+- **Policy**: The policy is defined by the variable `var.admin_policy`.
+
+## ECR Policy
+
+- **Name**: `ecr-policy`
+- **Description**: This policy is used for ECR repository management.
+- **Policy**: The policy is defined by the variable `var.ecr_policy`.
+
+## Policy Attachments
+
+### EC2 Policy Attachment
+
+- **Attached to**: IAM Group `autoscaleupinfra`
+- **Policy ARN**: `aws_iam_policy.ec2_policy.arn`
+
+### Admin Policy Attachment
+
+- **Attached to**: IAM Group `autoscaleupinfra`
+- **Policy ARN**: `aws_iam_policy.admin_policy.arn`
+
+### ECR Policy Attachment
+
+- **Attached to**: IAM Role `ec2-role`
+- **Policy ARN**: `aws_iam_policy.ecr_policy.arn`
+
+You can find the corresponding Terraform configuration in the provided `.tf` file.
+
 ## Resources
 
 | Name | Type |
