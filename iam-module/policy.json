@@ -1,0 +1,65 @@
+{
+    "ec2_role_assume_role_policy": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "ec2.amazonaws.com"
+          },
+          "Action": "sts:AssumeRole"
+        }
+      ]
+    },
+    "ec2_policy": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Sid": "AllowEC2Management",
+          "Effect": "Allow",
+          "Action": "ec2:*",
+          "Resource": "*",
+          "Condition": {
+            "StringEquals": {
+              "aws:RequestedRegion": "ap-southeast-1"
+            }
+          }
+        },
+        {
+          "Sid": "DenyNonMicroInstanceTypes",
+          "Effect": "Deny",
+          "Action": "ec2:*",
+          "Resource": "*",
+          "Condition": {
+            "ForAnyValue:StringNotLike": {
+              "ec2:InstanceType": [
+                "t2.micro"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "admin_policy": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": "*",
+          "Resource": "*"
+        }
+      ]
+    },
+    "ecr_policy": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Sid": "AllowECRManagement",
+          "Effect": "Allow",
+          "Action": "ecr:*",
+          "Resource": "*"
+        }
+      ]
+    }
+  }
+  
