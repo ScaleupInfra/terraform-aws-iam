@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  terrform:
+  terraform:
     name: Terraform
     runs-on: ubuntu-latest
 
@@ -21,26 +21,21 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-1
 
-      # - name: Install pip
-      #   run: |
-      #     sudo apt update
-      #     sudo apt install -y python3-pip
-
-      # - name: Install checkov
-      #   run: sudo pip3 install checkov
+      - name: Install InfraCost CLI
+        run: curl -sL https://raw.githubusercontent.com/infracost/infracost/master/scripts/install.sh | bash
 
       - name: Terraform Init
         working-directory: .
         run: terraform init
 
-      # # - name: Checkov Test
-      #   working-directory: .
-      #   run: checkov -d . --skip-check=CKV_AWS_18,CKV2_AWS_62,CKV_AWS_144,CKV2_AWS_6,CKV_AWS_145,CKV_AWS_19,CKV_GHA_4
-
-
       - name: Terraform Plan
         working-directory: .
-        run: terraform plan
+        run: terraform plan -out=tfplan
+
+      - name: Run InfraCost
+        env:
+          INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
+        run: infracost breakdown --path=tfplan
 
       - name: Terraform Apply
         working-directory: .
