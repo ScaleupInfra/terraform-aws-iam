@@ -35,10 +35,9 @@ jobs:
       - name: Run InfraCost
         env:
           INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
-        run: infracost diff --path=tfplan \
-                            --format=json \
-                            --compare-to=/tmp/infracost-base.json \
-                            --out-file=/tmp/infracost.json
+        run: infracost breakdown --path=${TF_ROOT} \
+                                 --format=json \
+                                 --out-file=/tmp/infracost-base.json
 
       - name: Terraform Apply
         working-directory: .
