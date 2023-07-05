@@ -164,6 +164,19 @@ Destroy Infrastructrre  dependencies
 ```bash
   terraform destroy -auto-approve
 ```
+### If the created IAM users after terraform apply want to log in to their IAM account, follow these step-by-step instructions:
+
+1) Open your preferred web browser and go to the AWS Management Console login page: https://console.aws.amazon.com/.
+
+2) Enter the IAM user's AWS account ID or alias. This information is typically provided by your AWS administrator or can be found in your account details. For Example - 782342199264
+
+3) Enter your IAM user name.
+
+4) In the "Password" field, enter the password associated with your IAM user account. Note that the password is case-sensitive.
+
+5) Click on the "Sign In" button to proceed.
+
+6) If the provided information is correct, and your IAM user account is properly configured, you will be redirected to the AWS Management Console dashboard, where you can access various AWS services and resources.
 
 
 ## 🔗 Links
